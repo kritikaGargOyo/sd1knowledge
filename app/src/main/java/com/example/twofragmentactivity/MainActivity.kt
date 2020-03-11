@@ -11,13 +11,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        val fragment = FragmentTwo()
-        fragmentTransaction.replace(R.id.container, fragment)
+        val fragment = MoviesListFragment()
+        fragmentTransaction.replace(R.id.movies_fragment_container, fragment)
         fragmentTransaction.commit()
-
-
     }
-
-
-
 }
