@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class MoviesListAdapter( var context: Context?) :
+class MoviesListAdapter(private var context: Context?, private val movieListOnClickInterface: MovieListOnClickInterface) :
     RecyclerView.Adapter<MoviesListViewHolder>() {
 
     var responseList: ArrayList<MoviesListResponse> = arrayListOf()
@@ -16,7 +16,7 @@ class MoviesListAdapter( var context: Context?) :
                 R.layout.list_item,
                 viewGroup,
                 false
-            )
+            ) , movieListOnClickInterface
         )
     }
 
@@ -25,10 +25,6 @@ class MoviesListAdapter( var context: Context?) :
     }
 
     override fun onBindViewHolder(holder: MoviesListViewHolder, position: Int) {
-        holder.updateData(
-            responseList[position].title,
-            "https://image.tmdb.org/t/p/w500"+responseList[position].poster_path,
-            context
-        )
+        holder.updateData(responseList[position] , context)
     }
 }

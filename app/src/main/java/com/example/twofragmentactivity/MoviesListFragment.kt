@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-class MoviesListFragment : AppCompatDialogFragment()
+class MoviesListFragment : AppCompatDialogFragment() , MovieListOnClickInterface
 {
     private var rootview: View? = null
     var recyclerView: RecyclerView? = null
@@ -32,9 +32,8 @@ class MoviesListFragment : AppCompatDialogFragment()
         progressBar= rootview?.findViewById(R.id.loading)
         recyclerView?.layoutManager = GridLayoutManager(this.context,2)
         mPresenter?.setSearchRequest()
-        mAdapter = MoviesListAdapter(context)
+        mAdapter = MoviesListAdapter(context,this)
         recyclerView?.adapter = mAdapter
-
     }
 
     fun updateList(response: MoviesListResponse) {
@@ -42,4 +41,13 @@ class MoviesListFragment : AppCompatDialogFragment()
         mAdapter?.notifyDataSetChanged()
         progressBar?.visibility = View.GONE
     }
+
+    override fun onMovieClicked(moviesListResponse: MoviesListResponse) {
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
+        val fragment = MoviesDetailFragment(moviesListResponse)
+        fragmentTransaction?.replace(R.id.movies_fragment_container, fragment)
+        fragmentTransaction?.addToBackStack(fragment.tag)
+        fragmentTransaction?.commit()
+    }
+
 }
