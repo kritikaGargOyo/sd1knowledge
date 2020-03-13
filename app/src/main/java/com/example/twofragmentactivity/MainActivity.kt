@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         val fragment = MoviesListFragment()
         fragmentTransaction.replace(R.id.movies_fragment_container, fragment)
+       // fragmentTransaction.addToBackStack(fragment.tag)
         fragmentTransaction.commit()
     }
 }

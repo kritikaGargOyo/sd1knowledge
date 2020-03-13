@@ -1,17 +1,18 @@
 package com.example.twofragmentactivity
 
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-class MoviesListFragment : AppCompatDialogFragment() , MovieListOnClickInterface
+class MoviesListFragment : Fragment() , MovieListOnClickInterface
 {
     private var rootview: View? = null
     var recyclerView: RecyclerView? = null
@@ -28,11 +29,11 @@ class MoviesListFragment : AppCompatDialogFragment() , MovieListOnClickInterface
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView=rootview?.findViewById(R.id.rv_list_movies)
+        recyclerView=rootview?.findViewById<RecyclerView>(R.id.rv_list_movies)
         progressBar= rootview?.findViewById(R.id.loading)
         recyclerView?.layoutManager = GridLayoutManager(this.context,2)
         mPresenter?.setSearchRequest()
-        mAdapter = MoviesListAdapter(context,this)
+        mAdapter = MoviesListAdapter(context as Context,this)
         recyclerView?.adapter = mAdapter
     }
 
@@ -43,11 +44,7 @@ class MoviesListFragment : AppCompatDialogFragment() , MovieListOnClickInterface
     }
 
     override fun onMovieClicked(moviesListResponse: MoviesListResponse) {
-        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
-        val fragment = MoviesDetailFragment(moviesListResponse)
-        fragmentTransaction?.replace(R.id.movies_fragment_container, fragment)
-        fragmentTransaction?.addToBackStack(fragment.tag)
-        fragmentTransaction?.commit()
+        mPresenter?.getFilterFooterListener()?.onMovieItemClick(moviesListResponse)
     }
 
 }

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class MoviesListAdapter(private var context: Context?, private val movieListOnClickInterface: MovieListOnClickInterface) :
+class MoviesListAdapter(private var context: Context, private val movieListOnClickInterface: MovieListOnClickInterface) :
     RecyclerView.Adapter<MoviesListViewHolder>() {
 
     var responseList: ArrayList<MoviesListResponse> = arrayListOf()
