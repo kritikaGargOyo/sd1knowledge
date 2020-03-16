@@ -1,4 +1,4 @@
-package com.example.twofragmentactivity
+package com.example.twofragmentactivity.vo
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

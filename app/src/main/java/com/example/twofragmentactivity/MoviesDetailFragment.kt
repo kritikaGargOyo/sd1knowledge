@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialogFragment
+import com.example.twofragmentactivity.vo.MoviesListResponse
 
 class MoviesDetailFragment : AppCompatDialogFragment() {
 

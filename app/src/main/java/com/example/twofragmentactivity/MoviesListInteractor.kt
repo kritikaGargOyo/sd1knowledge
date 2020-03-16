@@ -1,12 +1,12 @@
 package com.example.twofragmentactivity
 
 import android.content.Context
-import android.view.View
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.twofragmentactivity.vo.MoviesListResponse
 import com.google.gson.GsonBuilder
 import org.json.JSONException
 
@@ -24,7 +24,7 @@ class MoviesListInteractor(val context: Context?) {
 
                     for (i in 0 until jsonArray.length()) {
                         val movie = jsonArray.getJSONObject(i)
-                        val responseObj:MoviesListResponse = gson.fromJson(movie.toString(), MoviesListResponse::class.java)
+                        val responseObj: MoviesListResponse = gson.fromJson(movie.toString(), MoviesListResponse::class.java)
                         moviesListResponseListener.onMoviesListResponse(responseObj)
 
                     }

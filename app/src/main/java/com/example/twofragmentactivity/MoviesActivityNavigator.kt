@@ -1,11 +1,11 @@
 package com.example.twofragmentactivity
 
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
+import com.example.twofragmentactivity.vo.MoviesListResponse
 
 class MoviesActivityNavigator(val activity: FragmentActivity?) {
-    fun openDetailFragment(moviesListResponse: MoviesListResponse){
+    fun openDetailFragment(moviesListResponse: MoviesListResponse?){
         val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
         val fragment = MoviesDetailFragment()
         fragment.arguments = Bundle().apply {

@@ -1,7 +1,6 @@
 package com.example.twofragmentactivity
 
-import android.view.View
-
+import com.example.twofragmentactivity.vo.MoviesListResponse
 
 class MoviesListPresenter(
     val view: View,
@@ -28,7 +27,7 @@ class MoviesListPresenter(
 
     private val movieClickListener: MovieClickListener =
         object : MovieClickListener {
-            override fun onMovieItemClick(moviesListResponse: MoviesListResponse) {
+            override fun onMovieItemClick(moviesListResponse: MoviesListResponse?) {
                 navigator.openDetailFragment(moviesListResponse)
             }
 
