@@ -12,32 +12,37 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-class MoviesListFragment : Fragment() , MovieListOnClickInterface
-{
+class MoviesListFragment : Fragment(), MovieListOnClickInterface, MoviesListPresenter.View {
     private var rootview: View? = null
     var recyclerView: RecyclerView? = null
-    var mAdapter:MoviesListAdapter? = null
+    var mAdapter: MoviesListAdapter? = null
     var progressBar: ProgressBar? = null
     var mPresenter: MoviesListPresenter? = null
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-       rootview  = inflater.inflate(R.layout.movies_fragment_layout,container,false)
-        mPresenter = MoviesListPresenter(this)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        rootview = inflater.inflate(R.layout.movies_fragment_layout, container, false)
+        val mInteractor = MoviesListInteractor(this.context)
+        val mNavigator = MoviesActivityNavigator(this.activity)
+        mPresenter = MoviesListPresenter(this, mInteractor,mNavigator)
         return rootview
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView=rootview?.findViewById<RecyclerView>(R.id.rv_list_movies)
-        progressBar= rootview?.findViewById(R.id.loading)
-        recyclerView?.layoutManager = GridLayoutManager(this.context,2)
+        recyclerView = rootview?.findViewById<RecyclerView>(R.id.rv_list_movies)
+        progressBar = rootview?.findViewById(R.id.loading)
+        recyclerView?.layoutManager = GridLayoutManager(this.context, 2)
         mPresenter?.setSearchRequest()
-        mAdapter = MoviesListAdapter(context as Context,this)
+        mAdapter = MoviesListAdapter(context as Context, this)
         recyclerView?.adapter = mAdapter
     }
 
-    fun updateList(response: MoviesListResponse) {
+    override fun updateList(response: MoviesListResponse) {
         mAdapter?.responseList?.add(response)
         mAdapter?.notifyDataSetChanged()
         progressBar?.visibility = View.GONE

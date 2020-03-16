@@ -10,16 +10,16 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.GsonBuilder
 import org.json.JSONException
 
-class MoviesListInteractor {
+class MoviesListInteractor(val context: Context?) {
 
-    fun getMovies(moviesListResponseListener: MoviesListResponseListener, context: Context?) {
-        var queue: RequestQueue = Volley.newRequestQueue(context)
+    fun getMovies(moviesListResponseListener: MoviesListResponseListener) {
+        val queue: RequestQueue = Volley.newRequestQueue(context)
         val url = "https://api.themoviedb.org/3/trending/all/day?api_key=008766d2113430a3a0896883b18ea254"
 
         val request = JsonObjectRequest(Request.Method.GET, url, null,
             Response.Listener { response ->
                 try {
-                    var jsonArray = response.getJSONArray("results")
+                    val jsonArray = response.getJSONArray("results")
                     val gson = GsonBuilder().create()
 
                     for (i in 0 until jsonArray.length()) {

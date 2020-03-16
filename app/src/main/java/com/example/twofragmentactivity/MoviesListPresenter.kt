@@ -1,22 +1,29 @@
 package com.example.twofragmentactivity
 
-
-class MoviesListPresenter(private val view: MoviesListFragment , val interactor: MoviesListInteractor = MoviesListInteractor()) {
-    private var navigator : MoviesActivityNavigator = MoviesActivityNavigator(view.activity)
+import android.view.View
 
 
-    private val moviesListResponseListener: MoviesListInteractor.MoviesListResponseListener = object : MoviesListInteractor.MoviesListResponseListener {
-        override fun onMoviesListResponse(response: MoviesListResponse) { handleFirstMoviesListResponse(response) }
-        override fun onError(errorMessage: String?) {}
-    }
+class MoviesListPresenter(
+    val view: View,
+    val interactor: MoviesListInteractor,
+    private var navigator: MoviesActivityNavigator
+) {
+
+    private val moviesListResponseListener: MoviesListInteractor.MoviesListResponseListener =
+        object : MoviesListInteractor.MoviesListResponseListener {
+            override fun onMoviesListResponse(response: MoviesListResponse) {
+                handleFirstMoviesListResponse(response)
+            }
+
+            override fun onError(errorMessage: String?) {}
+        }
 
     private fun handleFirstMoviesListResponse(response: MoviesListResponse) {
         view.updateList(response)
     }
 
-    fun setSearchRequest()
-    {
-        interactor.getMovies(moviesListResponseListener,view.context)
+    fun setSearchRequest() {
+        interactor.getMovies(moviesListResponseListener)
     }
 
     private val movieClickListener: MovieClickListener =
@@ -31,5 +38,7 @@ class MoviesListPresenter(private val view: MoviesListFragment , val interactor:
         return movieClickListener
     }
 
-
+     interface View {
+        fun updateList(response: MoviesListResponse)
+    }
 }
