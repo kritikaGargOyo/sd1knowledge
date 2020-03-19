@@ -1,36 +1,29 @@
 package com.example.twofragmentactivity
 
-import android.content.Context
-import androidx.lifecycle.MutableLiveData
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.google.gson.GsonBuilder
-import java.io.File
-import java.io.IOException
 
 
-interface MoviesDataRepository<T> {
- fun getMoviesList() : MutableLiveData<List<T>>
-}
+class MoviesDataRepository {
 
-class MoviesDataRepositoryImpl (val context: Context?): MoviesDataRepository<MoviesListResponse>
-{
-    override fun getMoviesList(): MutableLiveData<List<MoviesListResponse>> {
-        val jsonFileString = getJsonDataFromAsset(context, "MovieApi.json")
-        val gson = GsonBuilder().create()
-        val moviesList = gson.fromJson(jsonFileString, MoviesResponse::class.java)
-        val listData = MutableLiveData<List<MoviesListResponse>>()
-        listData.postValue(moviesList.results)
-        return listData
+    fun getMovies(callback: ResponseCallback<MoviesResponse>) {
+
+        val queue: RequestQueue = Volley.newRequestQueue(MyApplication.getAppContext())
+        val url =
+            "https://api.themoviedb.org/3/trending/all/day?api_key=008766d2113430a3a0896883b18ea254"
+
+        val request = JsonObjectRequest(Request.Method.GET, url, null,
+            Response.Listener { response ->
+                val gson = GsonBuilder().create()
+                val moviesList = gson.fromJson(response.toString(), MoviesResponse::class.java)
+                callback.onSuccess(moviesList)
+            }, Response.ErrorListener { error ->
+                error.printStackTrace()
+            })
+        queue.add(request)
     }
-
-    fun getJsonDataFromAsset(context: Context?, fileName: String): String? {
-        val jsonString: String?
-        try {
-            jsonString = context?.assets?.open(fileName)?.bufferedReader().use { it?.readText() }
-        } catch (ioException: IOException) {
-            ioException.printStackTrace()
-            return null
-        }
-        return jsonString
-    }
-
 }

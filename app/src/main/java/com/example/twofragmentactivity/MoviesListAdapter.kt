@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class MoviesListAdapter(private var context: Context, private val movieListOnClickInterface: MovieListOnClickInterface) :
+class MoviesListAdapter( private val movieListOnClickInterface: MovieListOnClickInterface) :
     RecyclerView.Adapter<MoviesListViewHolder>() {
 
     var responseList: List<MoviesListResponse> = listOf()
@@ -25,6 +25,6 @@ class MoviesListAdapter(private var context: Context, private val movieListOnCli
     }
 
     override fun onBindViewHolder(holder: MoviesListViewHolder, position: Int) {
-        holder.updateData(responseList[position] , context)
+        holder.updateData(responseList[position])
     }
 }
