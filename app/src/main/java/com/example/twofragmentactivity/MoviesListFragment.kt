@@ -1,24 +1,24 @@
 package com.example.twofragmentactivity
 
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-class MoviesListFragment : Fragment(), MovieListOnClickInterface, MoviesListPresenter.View {
+class MoviesListFragment : Fragment(), MovieListOnClickInterface {
     private var rootview: View? = null
     var recyclerView: RecyclerView? = null
     var mAdapter: MoviesListAdapter? = null
     var progressBar: ProgressBar? = null
-    var mPresenter: MoviesListPresenter? = null
-
+    private lateinit var viewModel: MoviesListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,30 +26,36 @@ class MoviesListFragment : Fragment(), MovieListOnClickInterface, MoviesListPres
         savedInstanceState: Bundle?
     ): View? {
         rootview = inflater.inflate(R.layout.movies_fragment_layout, container, false)
-        val mInteractor = MoviesListInteractor(this.context)
-        val mNavigator = MoviesActivityNavigator(this.activity)
-        mPresenter = MoviesListPresenter(this, mInteractor,mNavigator)
+        val viewModelProvider = ViewModelProvider(requireActivity(), MoviesViewModelFactory())
+        viewModel = viewModelProvider[MoviesListViewModel::class.java]
         return rootview
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = rootview?.findViewById<RecyclerView>(R.id.rv_list_movies)
+        recyclerView = rootview?.findViewById(R.id.rv_list_movies)
         progressBar = rootview?.findViewById(R.id.loading)
         recyclerView?.layoutManager = GridLayoutManager(this.context, 2)
-        mPresenter?.setSearchRequest()
-        mAdapter = MoviesListAdapter(context as Context, this)
+        mAdapter = MoviesListAdapter(this)
         recyclerView?.adapter = mAdapter
-    }
 
-    override fun updateList(response: MoviesListResponse) {
-        mAdapter?.responseList?.add(response)
-        mAdapter?.notifyDataSetChanged()
-        progressBar?.visibility = View.GONE
+
+        viewModel.getMovieListLiveData().observe(viewLifecycleOwner, Observer {
+            mAdapter?.responseList = it
+            mAdapter?.notifyDataSetChanged()
+            progressBar?.visibility = View.GONE
+        })
     }
 
     override fun onMovieClicked(moviesListResponse: MoviesListResponse) {
-        mPresenter?.getFilterFooterListener()?.onMovieItemClick(moviesListResponse)
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
+        val fragment = MoviesDetailFragment()
+        fragment.arguments = Bundle().apply {
+            putParcelable("response", moviesListResponse)
+        }
+        fragmentTransaction?.add(R.id.movies_fragment_container, fragment)
+        fragmentTransaction?.addToBackStack(fragment.tag)
+        fragmentTransaction?.commit()
     }
 
 }
