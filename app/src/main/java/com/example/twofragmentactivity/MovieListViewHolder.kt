@@ -18,11 +18,11 @@ class MoviesListViewHolder(view: View, val movieListOnClickInterface: MovieListO
     var name = view.movie_name
     var image = view.image_movie
 
-    fun updateData(moviesListResponse: MoviesListResponse) {
-        name.text = moviesListResponse.title
+    fun updateData(moviesListResponse: MoviesListResponse?) {
+        name.text = moviesListResponse?.title
         Glide.with(MyApplication.getAppContext()).clear(image)
         Glide.with(MyApplication.getAppContext())
-            .load("https://image.tmdb.org/t/p/w500" + moviesListResponse.poster_path)
+            .load("https://image.tmdb.org/t/p/w500" + moviesListResponse?.poster_path)
             .into(image)
 
         image.setOnClickListener()

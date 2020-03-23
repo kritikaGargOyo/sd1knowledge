@@ -41,13 +41,12 @@ class MoviesListFragment : Fragment(), MovieListOnClickInterface {
 
 
         viewModel.getMovieListLiveData().observe(viewLifecycleOwner, Observer {
-            mAdapter?.responseList = it
-            mAdapter?.notifyDataSetChanged()
+            mAdapter?.submitList(it)
             progressBar?.visibility = View.GONE
         })
     }
 
-    override fun onMovieClicked(moviesListResponse: MoviesListResponse) {
+    override fun onMovieClicked(moviesListResponse: MoviesListResponse?) {
         val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
         val fragment = MoviesDetailFragment()
         fragment.arguments = Bundle().apply {
