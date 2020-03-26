@@ -9,22 +9,25 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class MoviesListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    var name = view.textttt
-    val image = view.image_movie
 
-    fun updateData(movieName: String?, imageUrl: String?, context: Context?) {
-        name.text = movieName
-       var queue: RequestQueue = Volley.newRequestQueue(context)
-        val imageRequest = ImageRequest(imageUrl,
-            Response.Listener<Bitmap?> { response ->
-                image.setImageBitmap(response)
-            }, 0, 0, ImageView.ScaleType.CENTER_CROP, null,
-            Response.ErrorListener { error ->
-                error.printStackTrace()
-            })
-        queue.add(imageRequest)
+class MoviesListViewHolder(view: View, val movieListOnClickInterface: MovieListOnClickInterface) :
+    RecyclerView.ViewHolder(view) {
+    var name = view.movie_name
+    var image = view.image_movie
+
+    fun updateData(moviesListResponse: MoviesListResponse) {
+        name.text = moviesListResponse.title
+        Glide.with(MyApplication.getAppContext()).clear(image)
+        Glide.with(MyApplication.getAppContext())
+            .load("https://image.tmdb.org/t/p/w500" + moviesListResponse.poster_path)
+            .into(image)
+
+        image.setOnClickListener()
+        {
+            movieListOnClickInterface.onMovieClicked(moviesListResponse)
+        }
     }
 }
