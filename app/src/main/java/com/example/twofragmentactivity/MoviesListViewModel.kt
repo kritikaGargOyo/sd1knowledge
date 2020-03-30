@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 
 class MoviesListViewModel( moviesDataRepository: MoviesDataRepository) : ViewModel() {
 
-    val movies : LiveData<List<MoviesListResponse>> = moviesDataRepository.getMovies()
-    fun getMovieListLiveData(): LiveData<List<MoviesListResponse>> {
+    val movies : LiveData<Resource<List<MoviesListResponse>>> = moviesDataRepository.loadUser()
+    fun getMovieListLiveData(): LiveData<Resource<List<MoviesListResponse>>> {
         return movies
     }
 }

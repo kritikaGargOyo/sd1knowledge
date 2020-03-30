@@ -8,7 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 class MoviesViewModelFactory() : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MoviesListViewModel::class.java)) {
-            val repo = MoviesDataRepository()
+            val database = AppDatabase.getInstance()
+            val repo = MoviesDataRepository(database.movieDao() , AppExecutors())
             return MoviesListViewModel(repo) as T
         }
 

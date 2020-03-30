@@ -41,8 +41,17 @@ class MoviesListFragment : Fragment(), MovieListOnClickInterface {
 
 
         viewModel.getMovieListLiveData().observe(viewLifecycleOwner, Observer {
-            mAdapter?.submitList(it)
-            progressBar?.visibility = View.GONE
+            if(it.status == Status.LOADING)
+            {
+                progressBar?.visibility = View.VISIBLE
+            }
+            else
+            {
+                mAdapter?.submitList(it.data)
+                progressBar?.visibility = View.GONE
+            }
+
+
         })
     }
 
