@@ -21,7 +21,7 @@ class MoviesDataRepository(
                 movieDao.insertAll(item)
             }
 
-            override fun shouldFetch(data: List<MoviesListResponse>?) = data == null
+            override fun shouldFetch(data: List<MoviesListResponse>?) = data?.size == 0 || data == null
 
             override fun loadFromDb() = movieDao.getAllMovies()
 
