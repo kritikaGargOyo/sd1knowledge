@@ -36,7 +36,7 @@ class MoviesListFragment : Fragment(), MovieListOnClickInterface {
         recyclerView = rootview?.findViewById(R.id.rv_list_movies)
         progressBar = rootview?.findViewById(R.id.loading)
         recyclerView?.layoutManager = GridLayoutManager(this.context, 2)
-        mAdapter = MoviesListAdapter(this)
+        mAdapter = MoviesListAdapter(this, viewLifecycleOwner)
         recyclerView?.adapter = mAdapter
 
 

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:layout_width="200dp"
         android:layout_height="300dp"
         android:layout_marginBottom="10dp"
         android:id="@+id/image_movie"
         />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,11 +21,21 @@
         android:textSize="24sp"
         android:layout_margin="8dp"
         android:padding="8dp"
-        android:visibility="visible"
+        android:visibility="gone"
+        android:layout_alignLeft="@id/image_movie"
+        android:layout_alignRight="@id/image_movie"
         android:layout_alignBottom="@id/image_movie"
-        android:layout_toStartOf="@id/image_movie"
-        android:gravity="center_horizontal"
-        android:layout_toLeftOf="@id/image_movie" />
+        android:gravity="center"
+         />
+    <com.like.LikeButton
+        app:icon_type="heart"
+        app:icon_size="12dp"
+        android:id="@+id/star_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/image_movie"
+        android:layout_alignLeft="@id/image_movie"
+        />
 
 
 </RelativeLayout>

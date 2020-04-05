@@ -27,8 +27,13 @@ class MoviesDetailFragment : AppCompatDialogFragment() {
         rootview?.findViewById<TextView>(R.id.rating)
             ?.setText(moviesListResponse?.vote_average.toString())
         rootview?.findViewById<TextView>(R.id.title)?.setText(moviesListResponse?.title)
-        rootview?.findViewById<TextView>(R.id.release_date)
-            ?.setText(moviesListResponse?.release_date)
+        rootview?.findViewById<TextView>(R.id.release_date)?.setText(moviesListResponse?.release_date)
+
+
+        if (moviesListResponse?.isLiked == true) {
+            rootview?.findViewById<com.like.LikeButton>(R.id.star_button)?.isLiked = true
+        }
+
     }
 }
 

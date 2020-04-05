@@ -24,5 +24,6 @@ data class MoviesListResponse(
     var video: Boolean?,
     var vote_average: Double?,
     var vote_count: Int?,
-    var popularity: Double?
+    var popularity: Double?,
+    var isLiked:Boolean
 ) : Parcelable, Serializable

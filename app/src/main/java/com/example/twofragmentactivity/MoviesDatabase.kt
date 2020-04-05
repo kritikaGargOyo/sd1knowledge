@@ -13,7 +13,7 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.GsonBuilder
 
 @Suppress("DEPRECATION")
-@Database(entities = [MoviesListResponse::class], version = 3, exportSchema = false)
+@Database(entities = [MoviesListResponse::class], version = 4, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
 

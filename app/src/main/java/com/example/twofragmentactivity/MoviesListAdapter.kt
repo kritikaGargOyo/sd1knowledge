@@ -2,10 +2,11 @@ package com.example.twofragmentactivity
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class MoviesListAdapter(private val movieListOnClickInterface: MovieListOnClickInterface) :
+class MoviesListAdapter(private val movieListOnClickInterface: MovieListOnClickInterface , val lifecycleOwner: LifecycleOwner) :
     ListAdapter<MoviesListResponse?, RecyclerView.ViewHolder>(MovieDataDiffCB()) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MoviesListViewHolder {
@@ -21,6 +22,6 @@ class MoviesListAdapter(private val movieListOnClickInterface: MovieListOnClickI
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MoviesListViewHolder)
-            holder.updateData(getItem(position))
+            holder.updateData(getItem(position) , lifecycleOwner)
     }
 }
