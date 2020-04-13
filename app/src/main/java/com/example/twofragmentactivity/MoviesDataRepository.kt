@@ -50,17 +50,18 @@ class MoviesDataRepository(
     }
 
     fun refreshMovies() {
-        object :
-            NetworkBoundResource<List<MoviesListResponse>, List<MoviesListResponse>>(appExecutors) {
-            override fun saveCallResult(item: List<MoviesListResponse>) {
-                movieDao.insertAll(item)
-            }
+        val queue: RequestQueue = Volley.newRequestQueue(MyApplication.getAppContext())
+        val url =
+            "https://api.themoviedb.org/3/trending/all/day?api_key=008766d2113430a3a0896883b18ea254"
 
-            override fun shouldFetch(data: List<MoviesListResponse>?) = true
-
-            override fun loadFromDb() = movieDao.getAllMovies()
-
-            override fun createCall() = refreshMoviesList()
-        }
+        val request = JsonObjectRequest(Request.Method.GET, url, null,
+            Response.Listener { response ->
+                val gson = GsonBuilder().create()
+                val moviesList = gson.fromJson(response.toString(), MoviesResponse::class.java)
+                movieDao.insertAll(moviesList.results)
+            }, Response.ErrorListener { error ->
+                error.printStackTrace()
+            })
+        queue.add(request)
     }
 }
