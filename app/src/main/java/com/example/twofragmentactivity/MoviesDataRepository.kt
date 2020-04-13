@@ -48,4 +48,19 @@ class MoviesDataRepository(
         queue.add(request)
         return movies
     }
+
+    fun refreshMovies() {
+        object :
+            NetworkBoundResource<List<MoviesListResponse>, List<MoviesListResponse>>(appExecutors) {
+            override fun saveCallResult(item: List<MoviesListResponse>) {
+                movieDao.insertAll(item)
+            }
+
+            override fun shouldFetch(data: List<MoviesListResponse>?) = true
+
+            override fun loadFromDb() = movieDao.getAllMovies()
+
+            override fun createCall() = refreshMoviesList()
+        }
+    }
 }
