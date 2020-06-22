@@ -1,5 +1,5 @@
 package com.example.twofragmentactivity
 
 interface MovieListOnClickInterface {
-    fun onMovieClicked(moviesListResponse: MoviesListResponse)
+    fun onMovieClicked(moviesListResponse: MoviesListResponse?)
 }

@@ -1,14 +1,13 @@
 package com.example.twofragmentactivity
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class MoviesListAdapter( private val movieListOnClickInterface: MovieListOnClickInterface) :
-    RecyclerView.Adapter<MoviesListViewHolder>() {
-
-    var responseList: List<MoviesListResponse> = listOf()
+class MoviesListAdapter(private val movieListOnClickInterface: MovieListOnClickInterface , val lifecycleOwner: LifecycleOwner) :
+    ListAdapter<MoviesListResponse?, RecyclerView.ViewHolder>(MovieDataDiffCB()) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MoviesListViewHolder {
         return MoviesListViewHolder(
@@ -16,15 +15,13 @@ class MoviesListAdapter( private val movieListOnClickInterface: MovieListOnClick
                 R.layout.list_item,
                 viewGroup,
                 false
-            ) , movieListOnClickInterface
+            ), movieListOnClickInterface
         )
     }
 
-    override fun getItemCount(): Int {
-        return responseList.size
-    }
 
-    override fun onBindViewHolder(holder: MoviesListViewHolder, position: Int) {
-        holder.updateData(responseList[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is MoviesListViewHolder)
+            holder.updateData(getItem(position) , lifecycleOwner)
     }
 }

@@ -36,18 +36,26 @@ class MoviesListFragment : Fragment(), MovieListOnClickInterface {
         recyclerView = rootview?.findViewById(R.id.rv_list_movies)
         progressBar = rootview?.findViewById(R.id.loading)
         recyclerView?.layoutManager = GridLayoutManager(this.context, 2)
-        mAdapter = MoviesListAdapter(this)
+        mAdapter = MoviesListAdapter(this, viewLifecycleOwner)
         recyclerView?.adapter = mAdapter
 
 
         viewModel.getMovieListLiveData().observe(viewLifecycleOwner, Observer {
-            mAdapter?.responseList = it
-            mAdapter?.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
+            if(it.status == Status.LOADING)
+            {
+                progressBar?.visibility = View.VISIBLE
+            }
+            else
+            {
+                mAdapter?.submitList(it.data)
+                progressBar?.visibility = View.GONE
+            }
+
+
         })
     }
 
-    override fun onMovieClicked(moviesListResponse: MoviesListResponse) {
+    override fun onMovieClicked(moviesListResponse: MoviesListResponse?) {
         val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
         val fragment = MoviesDetailFragment()
         fragment.arguments = Bundle().apply {
